@@ -9,47 +9,28 @@ using namespace std;
 
 class Solution{
     
-    bool solveMem(int index, int arr[], int N, int target, vector<vector<int> >& dp) {
+    bool solveTabSO(int arr[], int N, int total) {
+        vector<int> curr(total+1, 0);
+        vector<int> next(total+1, 0);
         
-        if(index >= N)
-            return 0;
-        
-        if(target < 0)
-            return 0;
-            
-        if(target == 0)
-            return 1;
-            
-        if(dp[index][target] != -1)
-            return dp[index][target];
-            
-        int incl = solveMem(index+1, arr, N, target - arr[index], dp);
-        int excl = solveMem(index+1, arr, N, target, dp);
-        
-        return dp[index][target] = incl or excl;
-    }
-    
-    bool solveTab(int arr[], int N, int total) {
-        vector<vector<int> > dp(N+1, vector<int> (total+1, 0));
-        
-        for(int i=0; i<=N; i++) {
-            dp[i][0] = 1;
-        }
+        curr[0] = 1;
+        next[0] = 1;
         
         for(int index = N-1; index >= 0; index--) {
             for(int target = 0; target <= total/2; target++) {
                 
                 int incl = 0;
                 if(target - arr[index] >= 0)
-                    incl = dp[index+1][target - arr[index]];
+                    incl = next[target - arr[index]];
                 
-                int excl = dp[index+1][target];
+                int excl = next[target];
                 
-                dp[index][target] = incl or excl;
+                curr[target] = incl or excl;
             }
+            next = curr;
         }
         
-        return dp[0][total/2];
+        return next[total/2];
     }
     
 public:
@@ -66,7 +47,7 @@ public:
         int target = total/2;
         
         
-        return solveTab(arr, N, total);
+        return solveTabSO(arr, N, total);
     }
 };
 
