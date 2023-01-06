@@ -5,11 +5,12 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
     
-    long long solveTab(int d, int faces, int t) {
+    long long solveTabSO(int d, int faces, int t) {
         
-        vector<vector<long long> > dp(d+1, vector<long long> (t+1, 0));
+        vector<long long> prev(t+1, 0);
+        vector<long long> curr(t+1, 0);
         //after analysig base case
-        dp[0][0] = 1;
+        prev[0] = 1;
         
         for(int dice = 1; dice <= d; dice++) {
             for(int target = 1; target <= t; target++) {
@@ -17,19 +18,21 @@ class Solution {
                 long long ans = 0;    
                 for(int i = 1; i <= faces; i++) {
                     if(target - i >= 0) {
-                        ans = ans + dp[dice-1][target - i];
+                        ans = ans + prev[target - i];
                     }
                 }
-                dp[dice][target] = ans;
+                curr[target] = ans;
             }
+            
+            prev = curr;
         }
         
-        return dp[d][t];
+        return prev[t];
     }
   public:
     long long noOfWays(int M , int N , int X) {
         
-        return solveTab(N, M, X);
+        return solveTabSO(N, M, X);
     }
 };
 
