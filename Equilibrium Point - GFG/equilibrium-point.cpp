@@ -16,11 +16,9 @@ class Solution{
         
         int i = 0;
         int j = n-1;
-        int sum1 = 0;
-        int sum2 = 0;
         
-        sum1 += a[0];
-        sum2 += a[n-1];
+        int sum1 = a[0];
+        int sum2 = a[n-1];
         
         while(i < j) {
             
@@ -34,17 +32,14 @@ class Solution{
                 sum1 += a[i];
                 sum2 += a[j];
                 
-                //cout <<"1->" << sum1 << "   " << sum2 << endl;
             }
             else if(sum1 < sum2) {
                 i++;
                 sum1 += a[i];
-                //cout <<"2->" <<sum1 << "   " << sum2 << endl;
             }
             else {
                 j--;
                 sum2 += a[j];
-                //cout << "3->"<<sum1 << "   " << sum2 << endl;
             }
         }
         
